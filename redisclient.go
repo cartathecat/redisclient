@@ -3,6 +3,7 @@ package redisclient
 import (
 	"errors"
 	"fmt"
+	"os"
 
 	"github.com/gomodule/redigo/redis"
 )
@@ -18,7 +19,12 @@ func RedisConnection() error {
 	fmt.Println("Redis init ")
 	var err error
 
-	Client, err = redis.DialURL("redis://localhost:6379")
+	host := os.Getenv("REDIS_SERVER")
+	if host == "" {
+		host = "localhost:6379"
+	}
+
+	Client, err = redis.DialURL("redis://" + host)
 	if err != nil {
 		return err
 	}
