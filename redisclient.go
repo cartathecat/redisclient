@@ -3,8 +3,9 @@ package redisclient
 // Connects to Redis DB
 
 import (
+	"bytes"
 	"errors"
-	"fmt"
+	"log"
 	"os"
 
 	"github.com/gomodule/redigo/redis"
@@ -13,12 +14,17 @@ import (
 // Client ...
 var Client redis.Conn
 
+var (
+	buf    bytes.Buffer
+	logger = log.New(&buf, "logger: ", log.Lshortfile+log.Ldate+log.Ltime)
+)
+
 /*
 RedisConnection ...
 */
 func RedisConnection() error {
 
-	fmt.Println("Redis init ")
+	log.Print("Redis init ")
 	var err error
 
 	host := os.Getenv("REDIS_SERVER")
@@ -30,7 +36,7 @@ func RedisConnection() error {
 	if err != nil {
 		return err
 	}
-	fmt.Println("Redis init done")
+	log.Print("Redis init done")
 	return nil
 }
 
@@ -93,10 +99,10 @@ func Auth() error {
 Ping ...
 */
 func Ping() error {
-	pong, err := redis.String(Client.Do("PING"))
+	_, err := redis.String(Client.Do("PING"))
 	if err != nil {
 		return err
 	}
-	fmt.Printf("Ping Response = %s\n", pong)
+	//fmt.Printf("Ping Response = %s\n", pong)
 	return nil
 }
