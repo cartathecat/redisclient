@@ -1,7 +1,7 @@
 package redisclient
 
 // Connects to Redis DB
-//
+// v1.0.3
 import (
 	"bytes"
 	"errors"
